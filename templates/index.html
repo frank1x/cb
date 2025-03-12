@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chaturbate Downloader</title>
+</head>
+<body>
+    <h2>Agregar modelo desde URL</h2>
+    <form action="/add" method="POST">
+        <input type="text" name="model_url" placeholder="https://es.chaturbate.com/modelo/" required>
+        <button type="submit">Añadir</button>
+    </form>
+
+    <h2>Lista de Modelos</h2>
+    <ul>
+        {% for model, online, url, downloading in models %}
+            <li>
+                {{ model }} - {% if online %}🟢 Online{% else %}🔴 Offline{% endif %}
+                {% if online and not downloading %}
+                    <form action="/download" method="POST" style="display:inline;">
+                        <input type="hidden" name="model" value="{{ model }}">
+                        <input type="hidden" name="url" value="{{ url }}">
+                        <button type="submit">Grabar</button>
+                    </form>
+                {% endif %}
+                {% if downloading %}
+                    <form action="/pause" method="POST" style="display:inline;">
+                        <input type="hidden" name="model" value="{{ model }}">
+                        <button type="submit">Pausar</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
